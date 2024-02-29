@@ -5,7 +5,6 @@ attach(df)
 
 #Birth
 hist(birth, ylab = "Any", main = "Any de naixement", col = "orange")
-boxplot(birth, ylab = "Any", main = "Any de naixement", col = "orange")
 
 #COMPTE: hi ha naixements força sospitosos (inclús d'abans del 1900)
 
@@ -15,17 +14,17 @@ pie(table(educ), main = "Nivell d'estudis")
 
 
 #Status
+barplot(table(status), main="Estat civil", 
+        col = "orange")
 pie(table(status), main ="Estat civil")
 
 #COMPTE: hi ha respostes rares (tipus "YOLO", "Absurd" i alguna altra)
 
 
 #Renda
-hist(renda, xlab = "Dollars ($)", main = "Renda anual", col = "orange")
-boxplot(renda, xlab = "Dollars ($)", main = "Renda anual", col = "orange")
+hist(renda, xlab = "Unitats monetàries", main = "Renda anual", col = "orange")
 
 #COMPTE: hi ha un outlier
-#Dollars o unitats monetàries?
 
 
 #Kids
@@ -55,43 +54,30 @@ pie(table(comp), main="Clients que han realitzat alguna queixa",
 #Wine
 hist(wine, main = "Despesa en vi durant els darrers dos anys", 
      xlab = "Vi (Unitats Monetàries)", col = "orange")
-boxplot(wine, main = "Despesa en vi durant els darrers dos anys", 
-        ylab = "Vi (Unitats Monetàries)", col = "orange")
-
 
 #Fruit
 hist(fruit, main = "Despesa en fruita durant els darrers dos anys", 
      xlab = "Fruita (Unitats Monetàries)", col = "orange")
-boxplot(fruit, main = "Despesa en fruita durant els darrers dos anys", 
-        ylab = "Fruita (Unitats Monetàries)", col = "orange")
-
 
 #Meat
 hist(meat, main = "Despesa en carn durant els darrers dos anys", 
      xlab = "Carn (Unitats Monetàries)", col = "orange")
-boxplot(meat, main = "Despesa en carn durant els darrers dos anys", 
-        ylab = "Carn (Unitats Monetàries)", col = "orange")
 
 
 #Fish
 hist(fish, main = "Despesa en peix durant els darrers dos anys", 
      xlab = "Peix (Unitats Monetàries)", col = "orange")
-boxplot(meat, main = "Despesa en peix durant els darrers dos anys", 
-        ylab = "Peix (Unitats Monetàries)", col = "orange")
 
 
 #Sweet
 hist(sweet, main = "Despesa en dolços durant els darrers dos anys", 
      xlab = "Dolços (Unitats Monetàries)", col = "orange")
-boxplot(sweet, main = "Despesa en dolços durant els darrers dos anys", 
-        ylab = "Dolços (Unitats Monetàries)", col = "orange")
-
 
 #Or
 hist(gold, main = "Despesa en or durant els darrers dos anys", 
      xlab = "Or (Unitats Monetàries)", col = "orange")
-boxplot(gold, main = "Despesa en or durant els darrers dos anys", 
-        ylab = "Or (Unitats Monetàries)", col = "orange")
+
+#FALTEN VARIABLES
 
 
 detach(df)
