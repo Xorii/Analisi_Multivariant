@@ -9,4 +9,3 @@ df[,names(df)[sapply(df,class)=="character"]] <-
   lapply(df[,names(df)[sapply(df,class)=="character"]],as.factor)
 
 attach(df)
-
