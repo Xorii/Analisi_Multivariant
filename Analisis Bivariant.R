@@ -15,29 +15,29 @@ AnaBivar <- function(df, NomVar, dir){
     for(j in (i+1):ncol(df)){
       jpeg(filename= paste(dir,NomVar[i],NomVar[j], ".jpeg", sep=""))
       if(class(df[,i]) == "numeric" && class(df[,j]) == "numeric"){ # 2 var. numeriques
-        plot(df[,i],df[,j], ylab = names(df)[i], xlab = names(df)[j], main=paste0("Scatter plot de ",NomVar[i]," y ", NomVar[j]))
+        plot(df[,i],df[,j], ylab = names(df)[i], xlab = names(df)[j], main=paste0("Scatter plot de ",NomVar[i]," i ", NomVar[j]))
       }
       if(class(df[,i]) == "numeric" && class(df[,j]) == "factor"){ #Numerica + categorica
         if(shapiro.test(df[,i])[2] < 0.05){ #comprovar normalitat. Si NO compleix: 
           plot(tapply(df[,i],df[,j],mean,na.rm=TRUE), 
-               ylab = names(df)[i], xlab = names(df)[j], main=paste0("Scatter plot de ", NomVar[i]," y ", NomVar[j], sep="")) 
+               ylab = names(df)[i], xlab = names(df)[j], main=paste0("Scatter plot de ", NomVar[i]," i ", NomVar[j], sep="")) 
         }else{
-          boxplot(df[,i] ~ df[,j], ylab = names(df)[i], xlab = names(df)[j], main=paste0("Boxplot de ",NomVar[i]," y ", NomVar[j])) #si compleix:
+          boxplot(df[,i] ~ df[,j], ylab = names(df)[i], xlab = names(df)[j], main=paste0("Boxplot de ",NomVar[i]," i ", NomVar[j])) #si compleix:
         }
       }
       if(class(df[,i]) == "factor" && class(df[,j]) == "numeric"){
         if(shapiro.test(df[,j])[2] < 0.05){
           plot(tapply(df[,j],df[,i],mean,na.rm=TRUE), 
-               ylab = names(df)[j], xlab = names(df)[i], main=paste0("Scatter plot de ",NomVar[i]," y ", NomVar[j]))
+               ylab = names(df)[j], xlab = names(df)[i], main=paste0("Scatter plot de ",NomVar[i]," i ", NomVar[j]))
         }else{
-          boxplot(df[,j] ~ df[,i], ylab = names(df)[j], xlab = names(df)[i], main=paste0("Boxplot de ",NomVar[i]," y ", NomVar[j]))
+          boxplot(df[,j] ~ df[,i], ylab = names(df)[j], xlab = names(df)[i], main=paste0("Boxplot de ",NomVar[i]," i ", NomVar[j]))
         }
       }
       if(class(df[,i]) == "factor" && class(df[,j]) == "factor"){ #categorica + categorica:
         barplot(table(df[,i],df[,j]), ylab = names(df)[i], xlab = names(df)[j], 
-                beside = TRUE, legend = TRUE, main=paste0("Gràfic de barres per ",NomVar[i]," y ", NomVar[j]))
+                beside = TRUE, legend = TRUE, main=paste0("Gràfic de barres per ",NomVar[i]," i ", NomVar[j]))
         barplot(table(df[,j],df[,i]), ylab = names(df)[i], xlab = names(df)[j],
-                beside = TRUE, legend = TRUE, main=paste0("Gràfic de barres per ",NomVar[i]," y ", NomVar[j]))
+                beside = TRUE, legend = TRUE, main=paste0("Gràfic de barres per ",NomVar[i]," i ", NomVar[j]))
       }
       if(class(df[,i]) == "integer" && class(df[,j]) == "numeric"){ # binaria + numerica
         
@@ -50,7 +50,7 @@ AnaBivar <- function(df, NomVar, dir){
 NomVar <- colnames(df) ## variables per les que es vol fer l'analisis
 
 ## Execució de la funció
-AnaBivar(data, NomVar, dirIA)
+AnaBivar(df, NomVar, dirIA)
 
 
 # TAULES. (SCRIPT PASSAT PER UN ALTRE GRUP)
