@@ -2,9 +2,8 @@
 #LECTURA DE DADES#
 
 ## Lectura de dades
-library(readxl)
-df <- read_excel("Dades.xlsx") ## comentar que no s'han llegit bé les dades
-
+ ## comentar que no s'han llegit bé les dades
+df <- D
 df <- as.data.frame(df[2:ncol(df)]) ## treure la columna id (de files)
 
 # df[,c("kids","teens","nOf")] <- sapply(df[,c("kids","teens","nOf")],as.numeric)
