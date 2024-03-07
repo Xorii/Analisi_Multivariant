@@ -28,3 +28,15 @@ sum(is.na((select_if(df_mice,is.numeric))))
 #Veiem que no ha completat les variables categòriques
 
 #No podem utlitzar el knn ja que tenim masses missings
+
+
+#Convertim els NA  de les variables categòriques en "no ha contestat".
+
+
+df <- df_mice
+df <- df %>%
+  mutate_all(~ ifelse(is.na(.), "no ha contestat", .))
+
+#df es el dataframe final
+
+sum(is.na(df))
