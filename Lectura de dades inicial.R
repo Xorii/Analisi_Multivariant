@@ -14,7 +14,7 @@ M$NOf <- apply(M[,21:25],1,sum)
 D <- M[,-c(1,8,18,21,22,23,24,25,27,28,29)]
 D <- D[,c(1:7,18,8:14,19:20,15:17)]
 
-#Convertim les categÃ²riques en factors
+#Convertim les categòriques en factors
 D$Education <- as.factor(D$Education)
 D$Marital_Status <- as.factor(D$Marital_Status)
 D$Kidhome <- as.factor(D$Kidhome)
@@ -28,7 +28,7 @@ names(D) <- c("birth","educ","status","renda","kids","teens",
               "recency","comp","wine","fruit","meat","fish",
               "sweet","gold","NComOf","AlOf","NOf","web","store","WebVis")
 
-#AleatÃ²riament borrem el 5% de les dades
+#Aleatòriament borrem el 5% de les dades
 set.seed(123)
 ind <- sample(1:(dim(D)[1]*(dim(D)[2]-2)),112 ,replace=FALSE)
 j <- ind%%18+1
@@ -40,9 +40,13 @@ for(k in 1:112){
 
 #### Exportar base de dades
 
+save(D, file = "Dades_NA.RData")
+
+
 library(xlsx)
 # Coma como separador y punto como separador decimal
 write.xlsx(D,"Dades.xlsx", # Nombre de la hoja de Excel
            col.names = TRUE)     # Incluir los nombres de las columnas (TRUE) o no (FALSE)
-                  # Si TRUE, los NA serÃ¡n celdas vacÃ­as
+                  # Si TRUE, los NA serán celdas vacías
+
 
