@@ -30,9 +30,9 @@ names(D) <- c("birth","educ","status","renda","kids","teens",
 
 #Aleatòriament borrem el 5% de les dades
 set.seed(123)
-ind <- sample(1:(dim(D)[1]*dim(D)[2]),112 ,replace=FALSE)
-j <- ind%%20+1
-i <- ind%/%20
+ind <- sample(1:(dim(D)[1]*(dim(D)[2]-2)),112 ,replace=FALSE)
+j <- ind%%18+1
+i <- ind%/%18
 
 for(k in 1:112){
   D[i[k], j[k]] <- NA
@@ -42,9 +42,7 @@ for(k in 1:112){
 
 library(xlsx)
 # Coma como separador y punto como separador decimal
-write.xlsx(D,                    # Data frame a ser exportado
-           "C:/Users/jordi.capdevila.maso/D.xlsx",                 # Ruta completa
-           sheetName = "Dades", # Nombre de la hoja de Excel
+write.xlsx(D,"Dades.xlsx", # Nombre de la hoja de Excel
            col.names = TRUE)     # Incluir los nombres de las columnas (TRUE) o no (FALSE)
                   # Si TRUE, los NA serán celdas vacías
 
