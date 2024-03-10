@@ -80,4 +80,4 @@ for (cN in colsNum) {
   ## ggsave(filename = paste0())
 }
   
-
+save(df_imputedKNN, df_mice, file = "Dades_preprocessades.RData")
