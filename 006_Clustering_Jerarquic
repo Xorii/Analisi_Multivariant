@@ -1,0 +1,43 @@
+df <- df_mice
+
+library(cluster)
+
+##Dades mixtes
+
+#dissimilarity matrix
+#do not include in actives the identifier variables nor the potential response variable
+
+n<-dim(df)[1]
+filtre<-c(1:n)
+
+dissimMatrix <- daisy(df[filtre,], metric = "gower", stand=TRUE)
+
+distMatrix<-dissimMatrix^2
+
+h1 <- hclust(distMatrix,method="ward.D2")  # NOTICE THE COST
+#versions noves "ward.D" i abans de plot: par(mar=rep(2,4)) si se quejara de los margenes del plot
+class(h1)
+str(h1)
+
+windows()
+
+plot(h1, main = "Totes les variables",xlab = "Dades", ylab = "")
+
+
+
+##Dades numèriques
+
+filtre2 <- sapply(df,class)=="numeric"
+
+dissimMatrix <- daisy(df[filtre,filtre2], metric = "gower", stand=TRUE)
+
+distMatrix<-dissimMatrix^2
+
+h2 <- hclust(distMatrix,method="ward.D2")  # NOTICE THE COST
+#versions noves "ward.D" i abans de plot: par(mar=rep(2,4)) si se quejara de los margenes del plot
+class(h2)
+str(h2)
+
+windows()
+
+plot(h2, main = "Variables numèriques", xlab = "Dades", ylab = "")
