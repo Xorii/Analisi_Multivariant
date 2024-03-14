@@ -1,3 +1,4 @@
+load("005_Dades_preprocessades.RData")
 df <- df_mice
 
 library(cluster)
@@ -21,7 +22,7 @@ str(h1)
 
 windows()
 
-plot(h1, main = "Totes les variables",xlab = "Dades", ylab = "")
+plot(h1, main = "Dendograma amb totes les variables",xlab = "Dades", ylab = "")
 
 
 
@@ -40,4 +41,4 @@ str(h2)
 
 windows()
 
-plot(h2, main = "Variables numèriques", xlab = "Dades", ylab = "")
+plot(h2, main = "Dendograma amb variables numèriques", xlab = "Dades", ylab = "")
