@@ -95,3 +95,9 @@ openxlsx::write.xlsx(as.data.frame(datat), paste0(path_grafics,"/analisibivarian
 #write.table(datat, "/analisibivariant.txt", row.names = TRUE,
 #col.names = TRUE, dec=".", sep="\t")
 
+# Per calcular la taula de correlacions entre les variables numèriques
+
+df_num<-df[sapply(df, is.numeric)] # df és la base de dades amb la que treballem
+round(cor(df_num, df_num, use="pairwise.complete.obs"), 3)
+
+
