@@ -72,4 +72,4 @@ plot(df$renda, df$fruit, col = colors[c2],
      xlab="Renda", ylab="Despesa en fruita en u.m.",
      main="Clustering jeràrquic variables numèriques",
      xli=c(0,200000))
-legend("topright", legend=unique(c1), col = colors, pch = 16)
+legend("topright", legend=unique(c2), col = colors, pch = 16)
