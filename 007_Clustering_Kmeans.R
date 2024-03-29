@@ -66,6 +66,25 @@ df_mice[,21]<-kmeans_model$cluster
 names(df_mice)[21]<-"Kmeans"
 names(df_mice)[17]<-"Ward"
 
+## gràfics mostrant la classificació dels clústers
+
+plot(df_mice$renda, df_mice$fruit, col = as.numeric(df_mice$Kmeans), 
+     xlab="Renda", ylab="Despesa en fruita en u.m.", main="Clustering K-Means")
+legend("topright", legend=unique(df_mice$Kmeans), col = 1:length(df_mice$Kmeans), pch = 1)
+
+## per veure millor els clústers:
+
+plot(df_mice$renda, df_mice$fruit, col = as.numeric(df_mice$Kmeans), xlim=c(0,17e+04), 
+     xlab="Renda", ylab="Despesa en fruita en u.m.", main="Clustering K-Means")
+legend("topright", legend=unique(df_mice$Kmeans), col = 1:length(df_mice$Kmeans), pch = 1)
+
+
+## gràfics mostrant la classificació dels clústers (per una altra variable)
+
+plot(df_mice$recency, df_mice$fruit, col = as.numeric(df_mice$Kmeans), 
+     xlab="Dies transcorreguts des de l'última compra", ylab="Despesa en fruita en u.m.", main="Clustering K-Means")
+legend("topright", legend=unique(df_mice$Kmeans), col = 1:length(df_mice$Kmeans), pch = 1)
+
 
 # LETS COMPUTE THE DECOMPOSITION OF INERTIA
 
