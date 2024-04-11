@@ -23,7 +23,7 @@ length(outliers)
 ```
 
 ```{r}
-View(df[outliers,"birth"])
+View(df[outliers,])
 ```
 
 ```{r}
