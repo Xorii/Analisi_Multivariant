@@ -1,4 +1,4 @@
-load("005_Dades_preprocessades.RData")
+load("009_Preprocessing2.RData")
 dd <- df_mice
 
 #  READING CREDSCO_BIN
