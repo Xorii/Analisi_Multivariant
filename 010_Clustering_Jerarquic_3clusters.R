@@ -66,7 +66,7 @@ k<-3 #Número de clústers obtingut mitjançant el dendograma
 c2 <- cutree(h2,k)
 c2
 
-colors <- c("#b3de69","#6baed6","#ee8262")
+colors <- c("#6baed6","#b3de69","#ee8262")
 
 plot(df$renda, df$fruit, col = colors[c2], 
      xlab="Renda", ylab="Despesa en fruita en u.m.",
