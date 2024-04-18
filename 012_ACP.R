@@ -128,7 +128,7 @@ View(Phi)
 # GRÀFICS NUMÈRIQUES
 
 plot.num <- function(Psi, eje1, eje2, dir) {
-  jpeg(filename= paste0(dir,"plot_num",eje1,"-",eje2,".jpeg"), quality = 100)
+  jpeg(filename= paste0(dir,"plot_num",eje1,"-",eje2,".jpeg"))
   
   X <- Phi[,eje1]
   Y <- Phi[,eje2]
