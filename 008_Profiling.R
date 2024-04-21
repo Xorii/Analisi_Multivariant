@@ -22,10 +22,6 @@ ValorTestXnum <- function(Xnum,P){
   return (pxk)
 }
 
-ValorTestXnum(dd$renda,P)
-Xnum <- dd$renda
-
-
 
 
 ValorTestXquali <- function(P,Xquali){
@@ -52,7 +48,7 @@ distMatrix<-dissimMatrix^2
 
 h1 <- hclust(distMatrix,method="ward.D2")  # NOTICE THE COST
 
-k <- 2
+k <- 3
 
 c1 <- cutree(h1,k)
 c1
