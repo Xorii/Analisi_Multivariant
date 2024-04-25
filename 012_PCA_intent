@@ -83,7 +83,7 @@ Psi <- pc1$x[,1:nd]
 dim(Psi)
 Psi[2000,]
 
-save(Psi, file='013_PCA_7dim.RData')
+save(Psi, file='012_PCA_7dim.RData')
 
 # STORAGE OF LABELS FOR INDIVIDUALS AND VARIABLES
 iden <- row.names(dcon)
