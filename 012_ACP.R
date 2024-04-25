@@ -64,7 +64,7 @@ percInerAccum
 #per incloure un 80% de la inèrcia -> 6 dimensions
 
 # SELECTION OF THE SINGIFICNT DIMENSIONS (keep 80% of total inertia)
-nd <- 6
+nd <- 7
 
 print(pc1)
 attributes(pc1)
@@ -80,6 +80,8 @@ pc1$x[2000,]
 Psi <- pc1$x[,1:nd]
 dim(Psi)
 Psi[2000,]
+
+save(Psi, file='013_PCA_7dim.RData')
 
 # STORAGE OF LABELS FOR INDIVIDUALS AND VARIABLES
 iden <- row.names(dcon)
