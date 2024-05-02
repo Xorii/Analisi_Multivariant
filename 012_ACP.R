@@ -92,7 +92,8 @@ ze <- rep(0,length(etiq)) # WE WILL NEED THIS VECTOR AFTERWARDS FOR THE GRAPHICS
 
 # [2] Generar combinacions 2 a 2 dels gràfics
 plot.psi <- function(Psi, eje1, eje2, dir) {
-  png(filename= paste0(dir,"plot_psi",eje1,"-",eje2, ".png"))
+  png(filename= paste0(dir,"plot_psi",eje1,"-",eje2, ".png"), 
+       width = 7, height = 7, units = 'in', res = 300)
 
   plot(Psi[,eje1],Psi[,eje2], type="n")
   text(Psi[,eje1],Psi[,eje2],labels=iden, cex=0.5)
@@ -132,7 +133,8 @@ View(Phi)
 # GRÀFICS NUMÈRIQUES
 
 plot.num <- function(Psi, eje1, eje2, dir) {
-  png(filename= paste0(dir,"plot_num",eje1,"-",eje2,".png"))
+  png(filename= paste0(dir,"plot_num",eje1,"-",eje2,".png"), 
+       width = 7, height = 7, units = 'in', res = 300)
   
   X <- Phi[,eje1]
   Y <- Phi[,eje2]
@@ -220,7 +222,8 @@ for (i in 1:ncol(Psi)) {
 #-------------------
 # veure gràfics a R (no guardar-los)
 plot.tot2 <- function(Psi, eje1, eje2) {
-  #png(filename = paste0(dir,"plot_tot",eje1,"-",eje2,".png"))
+  #png(filename = paste0(dir,"plot_tot",eje1,"-",eje2,".png"),, 
+  #     width = 7, height = 7, units = 'in', res = 300)
   
   X <- Phi[,eje1]
   Y <- Phi[,eje2]
