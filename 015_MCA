@@ -1,0 +1,271 @@
+##############################################
+### Anàlisi de Correspondències Múltiples  ###
+### Lectura                                ###
+##############################################
+
+### Carreguem els paquets que necessitarem ###
+library(FactoMineR)
+library(Matrix)
+
+
+?MCA
+### Lectura de la base de dades ###
+load("009_Preprocessing2.RData")
+dd <- df_mice
+
+
+#assuming R data (not pages web datafile)
+res.mca0<-MCA(dd, quanti.sup=c(1,4,7,9:15,18:20), quali.sup=c(8,16)) 
+#Deixem fora les variables qualitatives comp i AlOf
+#se indica cuantas cualitativas hacen falta(y en quanti las numericas)
+#Aporta dos mapes. El de variables i el de suplementaries
+
+attributes(res.mca0)#no uso factor extern porque es logical
+
+
+# VAPS
+res.mca0$eig
+barplot(res.mca0$eig[,1],main="Valors propis",names.arg=1:nrow(res.mca0$eig))
+barplot(res.mca0$eig[,3],main="Variabilitat Explicada")
+# Taula de VAPS:
+round(res.mca0$eig,2)
+#Redondea los valores propios a dos decimales
+
+dimdesc(res.mca0)
+"""
+La función dimdesc() s'utilitza per veure quines variables contribueixen més a
+cada dimensió
+"""
+# Contribucio
+res.mca0$ind$contrib
+res.mca0$var$contrib
+"""
+res.mca0$ind$contrib informa de les contribucions dels diferents individus a la
+variabilitat de les dimensions de l'MCA.
+
+res.mca0$var$contrib informa de les contribucions de les variables a la
+variabilitat de cada dimensió.
+"""
+
+
+#plot individus
+ind<-res.mca0$ind
+dim1<-ind$coord[,1]
+dim2<-ind$coord[,2]
+plot(dim1,dim2, cex=0.7)
+
+plot(res.mca0,invisible=c("var","quali.sup"),cex=0.7) #Es pot posar aquest gràfic?
+
+
+#Coordenades dels individus sobre el pla factorial
+# veps Coordenades
+res.mca0$ind$coord
+"""
+res.mca0$ind$coord indica les coordenades de cada individu en cada dimensió.
+"""
+
+#plot modalitats actives 
+var<-res.mca0$var
+dim1 <- var$coord[,1]
+dim2 <- var$coord[,2]
+colors <- rainbow(length(rownames(var$coord)))
+plot(dim1,dim2, cex=0.7,col='black')
+for(a in 1:length(rownames(var$coord))) {
+  text(var$coord[a, 1], var$coord[a, 2], labels = rownames(var$coord)[a], col = colors[a])
+}
+
+"""
+Igual què el d'abans però omito 'ind' enlloc de var
+"""
+# Coordenades de les modalitats
+res.mca0$var$coord
+
+class(res.mca0$var$coord)
+
+MatriuFactors<-as.data.frame(res.mca0$var$coord)
+
+
+plot(MatriuFactors[,1],MatriuFactors[,2])
+
+#arreglar el plot amb les mateixes tecniques utilitzades per la
+#visualitzacio de centroides en ACP
+
+#si analitzem Burt
+sapply(dd,typeof)
+res.mca<-MCA(dd, quanti.sup=c(1,4,7,9:15,18:20), quali.sup=c(8,16), method="Burt") #hago MCA usando burt
+
+ind<-res.mca$ind
+dim1 <- ind$coord[,1]
+dim2 <- ind$coord[,2]
+plot(dim1,dim2, cex=0.7)
+
+var<-res.mca$var
+dim1 <- var$coord[,1]
+dim2 <- var$coord[,2]
+colorss <- rainbow(length(rownames(var$coord)))
+plot(dim1,dim2, cex=0.7,col='black')
+
+for(a in 1:length(rownames(var$coord))) {
+  text(var$coord[a, 1], var$coord[a, 2], labels = rownames(var$coord)[a], col = colors[a])
+}
+#plot igual al de arriba sin etiquetas
+plot(dim1,dim2, cex=0.7,col='black')
+
+#plot individus i modalitats
+ind<-res.mca$ind
+var<-res.mca$var
+dim1<-ind$coord[,1]
+dim2<-ind$coord[,2]
+colors <- rainbow(length(rownames(var$coord)))
+plot(dim1,dim2, cex=0.7, col = "black")
+
+for(a in 1:length(rownames(var$coord))) {
+  text(var$coord[a, 1], var$coord[a, 2], labels = rownames(var$coord)[a], col = colors[a])
+}
+#Modalitats actives i il.lustratives
+ind<-res.mca$ind
+var<-res.mca$var
+var_sup<-res.mca$quali.sup
+colores <- rainbow(length(rownames(var_sup$coord)))
+
+#plot de les variables actives i les suplementàries
+plot(var$coord[, 1],var$coord[, 2], cex=0.7,col = "grey")
+for(i in 1:length(rownames(var_sup$coord))) {
+  text(var_sup$coord[i, 1], var_sup$coord[i, 2], labels = rownames(var_sup$coord)[i], col = colores[i])
+}
+
+#plot de les variables suplementàries i els individus
+plot(ind$coord[, 1], ind$coord[, 2], cex=0.7, col = "grey")
+# Añadir etiquetas con colores diferentes
+for(i in 1:length(rownames(var_sup$coord))) {
+  text(var_sup$coord[i, 1], var_sup$coord[i, 2], labels = rownames(var_sup$coord)[i], col = colors[i])
+}
+
+
+
+#plot amb les variables actives, suplementàries i individus
+colors <- rainbow(length(rownames(var_sup$coord))+length(rownames(var$coord)))
+plot(ind$coord[, 1], ind$coord[, 2], cex=0.7, col = "grey")
+for(i in 1:(length(rownames(var_sup$coord))+length(rownames(var_sup$coord)))) {
+  if (i<=length(rownames(var_sup$coord))){
+    text(var_sup$coord[i, 1], var_sup$coord[i, 2], labels = rownames(var_sup$coord)[i], col = colors[i])
+  }
+  else{
+    
+    text(var$coord[i, 1], var$coord[i, 2], labels = rownames(var$coord)[i], col = colors[i])  
+  }
+}
+
+#plot de les variables actives i suplementàries amb zoom
+colors <- rainbow(length(rownames(var_sup$coord))+length(rownames(var$coord)))
+
+plot(var$coord[, 1],var$coord[, 2], cex=0.7,col = "white",xlim = c(-0.5,1),ylim=(c(-0.5,1)))
+for(i in 1:(length(rownames(var_sup$coord))+length(rownames(var_sup$coord)))) {
+  if (i<=length(rownames(var_sup$coord))){
+    text(var_sup$coord[i, 1], var_sup$coord[i, 2], labels = rownames(var_sup$coord)[i], col = colors[i])
+  }
+  else{
+    
+    text(var$coord[i, 1], var$coord[i, 2], labels = rownames(var$coord)[i], col = colores[i])  
+  }
+}
+
+
+#plot dels individus i les variables suplementàries amb zoom
+plot(ind$coord[, 1],ind$coord[, 2], cex=0.7,col = "grey",xlim = c(-1,2),ylim=(c(-2,2)))
+for(i in 1:length(rownames(var_sup$coord))) {
+  text(var_sup$coord[i, 1], var_sup$coord[i, 2], labels = rownames(var_sup$coord)[i], col = colors[i])
+}
+
+#Modalitats illustratives soles
+var_sup <- res.mca$quali.sup
+plot(var_sup$coord[, 1], var_sup$coord[, 2], cex=0.7)
+#vaps
+res.mca$eig
+round(res.mca$eig,2)
+
+barplot(res.mca$eig[,1],main="Valors propis",names.arg=1:nrow(res.mca$eig))
+
+totalIner<- sum(res.mca$eig[,1])
+totalIner
+pinerEix<- 100*res.mca$eig[,1]/totalIner
+
+#Cummulated Inertia in subspaces, from first principal component to the 11th dimension subspace
+barplot(cumsum(pinerEix))
+
+# veps Coordenades
+res.mca$ind$coord
+
+#coordenades modalitats
+c<-res.mca$var$coord
+
+
+#contribucions
+res.mca$ind$contrib
+res.mca$var$contrib
+
+#contribucions a cada eix i test-values significatius
+#arrodonint a 4 decimals
+a<-dimdesc(res.mca) #lapply(dimdesc(res.mca),lapply,round,4)
+a
+
+b<-dimdesc(res.mca) #lapply(dimdesc(res.mca),lapply,signif,3)
+b
+
+a[1]
+a[2]
+
+a[[1]]$quali #miro que individuos influyeron en la dimension 1
+b[[1]]$quali#miro que variables influyeron más
+b[[2]]$quali#miro que variables influyeron más en la segunda dimensión
+
+#see what is important in the axes
+b
+
+#el.lipses de confiança
+plotellipses(res.mca,keepvar=c("D_LLUMINOSITAT","D_SUBTIPUS_ACCIDENT","Factor_Extern_climat","tipDia"), cex=0.4)
+
+plotellipses(res.mca,keepvar=c("quali"))
+plotellipses(res.mca,keepvar=c("quali.sup"))
+
+"""
+Los comandos plotellipses que has proporcionado se utilizan para visualizar 
+el espacio de las dimensiones del Análisis de Correspondencia Múltiple (MCA) con el objetivo de representar el agrupamiento de las categorías de las variables especificadas. 
+A continuación, te proporciono una breve explicación de cada uno de los comandos:
+"""
+
+#analisi d'una variable
+names(dd)
+sapply(dd,typeof)
+catdes(dd, num.var = 18)
+
+#Millorem els grafics
+names(dd)
+newdd = dd[, c("tipDia", "D_CLIMATOLOGIA")]
+res.mca1<-MCA(newdd, method="Burt", graph=FALSE)
+cats = apply(newdd, 2, function(x) nlevels(as.factor(x)))
+cats
+
+mca1_vars_df = data.frame(res.mca1$var$coord, Variable = rep(names(cats), cats))
+mca1_obs_df = data.frame(res.mca1$ind$coord)
+
+library(ggplot2)
+ggplot(data=mca1_vars_df, 
+       aes(x = Dim.1, y = Dim.2, label = rownames(mca1_vars_df))) +
+  geom_hline(yintercept = 0, colour = "gray70") +
+  geom_vline(xintercept = 0, colour = "gray70") +
+  geom_text(aes(colour=Variable)) +
+  ggtitle("MCA plot of variables using R package FactoMineR")
+
+
+ggplot(data = mca1_obs_df, aes(x = Dim.1, y = Dim.2)) +
+  geom_hline(yintercept = 0, colour = "gray70") +
+  geom_vline(xintercept = 0, colour = "gray70") +
+  geom_point(colour = "gray50", alpha = 0.7) +
+  geom_density2d(colour = "gray80") +
+  geom_text(data = mca1_vars_df, 
+            aes(x = Dim.1, y = Dim.2, 
+                label = rownames(mca1_vars_df), colour = Variable)) +
+  ggtitle("MCA plot of variables using R package FactoMineR") +
+  scale_colour_discrete(name = "Variable")
+
