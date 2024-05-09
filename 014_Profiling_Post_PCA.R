@@ -49,7 +49,7 @@ distMatrix<-dissimMatrix^2
 
 h1 <- hclust(distMatrix,method="ward.D2")  # NOTICE THE COST
 
-k <- 3
+k <- 7
 
 c1 <- cutree(h1,k)
 c1
@@ -73,14 +73,15 @@ pvalk <- matrix(data=0,nrow=nc,ncol=K, dimnames=list(levels(P),names(dades)))
 nameP<-"Class"
 n<-dim(dades)[1]
 
+color <- c( "#FDAB9B","#FA8D76","#EB4F48","#E03A42","#D2293D","#BB173A","red")
 par(ask=TRUE)
 for(k in 1:K){
   if (is.numeric(dades[,k])){ 
     print(paste("Anàlisi per classes de la Variable:", names(dades)[k]))
     
-    boxplot(dades[,k]~P, main=paste("Boxplot of", names(dades)[k], "vs", nameP ), horizontal=TRUE)
+    boxplot(dades[,k]~P, main=paste("Boxplot of", names(dades)[k], "vs", nameP ), horizontal=TRUE,col = color[k])
     
-    barplot(tapply(dades[[k]], P, mean),main=paste("Means of", names(dades)[k], "by", nameP ))
+    barplot(tapply(dades[[k]], P, mean),main=paste("Means of", names(dades)[k], "by", nameP ), col = color[k)
     abline(h=mean(dades[[k]]))
     legend(0,mean(dades[[k]]),"global mean",bty="n")
     print("Estadístics per groups:")
