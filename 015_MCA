@@ -64,18 +64,22 @@ res.mca0$ind$coord
 res.mca0$ind$coord indica les coordenades de cada individu en cada dimensió.
 """
 
-#plot modalitats actives 
-var<-res.mca0$var
-dim1 <- var$coord[,1]
-dim2 <- var$coord[,2]
+#plot totes les modalitats 
+coord <- rbind(res.mca0$var$coord,res.mca0$quali.sup$coord)
+dim1 <- coord[,1]
+dim2 <- coord[,2]
+
 colors <- rainbow(length(rownames(var$coord)))
-plot(dim1,dim2, cex=0.7,col='black')
-for(a in 1:length(rownames(var$coord))) {
-  text(var$coord[a, 1], var$coord[a, 2], labels = rownames(var$coord)[a], col = colors[a])
+plot(dim1,dim2, cex=0.7,col="black", main = "MCA Factor Map", xlim = c(-1,2))
+for(a in 1:length(rownames(coord))) {
+  text(coord[a, 1], coord[a, 2], labels = rownames(coord)[a], col = colors[a])
 }
 
+abline(v=0, col = "grey", lty = 2, lwd = 2)
+abline(h=0, col = "grey", lty = 2, lwd = 2)
+
 """
-Igual què el d'abans però omito 'ind' enlloc de var
+Igual que el d'abans però ometo 'ind' enlloc de var
 """
 # Coordenades de les modalitats
 res.mca0$var$coord
@@ -228,11 +232,7 @@ plotellipses(res.mca,keepvar=c("D_LLUMINOSITAT","D_SUBTIPUS_ACCIDENT","Factor_Ex
 plotellipses(res.mca,keepvar=c("quali"))
 plotellipses(res.mca,keepvar=c("quali.sup"))
 
-"""
-Los comandos plotellipses que has proporcionado se utilizan para visualizar 
-el espacio de las dimensiones del Análisis de Correspondencia Múltiple (MCA) con el objetivo de representar el agrupamiento de las categorías de las variables especificadas. 
-A continuación, te proporciono una breve explicación de cada uno de los comandos:
-"""
+
 
 #analisi d'una variable
 names(dd)
@@ -268,4 +268,3 @@ ggplot(data = mca1_obs_df, aes(x = Dim.1, y = Dim.2)) +
                 label = rownames(mca1_vars_df), colour = Variable)) +
   ggtitle("MCA plot of variables using R package FactoMineR") +
   scale_colour_discrete(name = "Variable")
-
