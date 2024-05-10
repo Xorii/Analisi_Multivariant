@@ -1,0 +1,172 @@
+## ANÃLISI DE DISCRIMINANTS
+install.packages("FactoMiner")
+library(MASS)
+library(FactoMineR)
+library(ggplot2)
+
+# Carreguem les dades
+data("iris")
+head(iris)
+
+# ------------------------------------------------------------------------------
+# Dividim les dades: 80% entrenament i 20% test
+
+set.seed(1994)   # Declarem la semilla
+acc_lda <- c()
+acc_qda <- c()
+
+mostra <- caret::createDataPartition(y = iris[, "Species"], p = 0.8, list = FALSE) # Generem una mostra amb el 80% de les dades.
+mostra <- sample(mostra, replace = F)  # Reordenació aleatòria de la mostra.
+
+
+
+n <- length(mostra) # Longitud de la mostra
+
+for(i in 1:10){  # Inicialitzem un bucle on es partirà la mostra en 10 submostres.
+  ind <- (i*(n/10) ):(i*n/10+(n/10-1))-(n/10-1)  # Index de la submostra,
+
+  train <- iris[mostra[-ind], ] # Definició de les dades training a partir de les submostres.
+  test <- iris[mostra[ind], ] # Test = la submostra escollida. 
+  
+  ### Preprocessament
+    preproc_param <- caret::preProcess(x = train, method = c("center", "scale")) # paràmetres de preprocessament. Per preprocessar les dades.
+  
+  # Transformem les dades segons el que s'ha establert en els paràmetres anteriors
+  train <- preproc_param |> predict(train) #coge el archivo preprocesado y hace un predict de train simultaneamente
+  test <- preproc_param |> predict(test)
+  
+  
+  # ==============================================================================
+  # ANALISIS DISCRIMINANT LINEAL
+  options(digits = 4)
+  modelo_lda <- lda(Species ~ ., data = train)
+  modelo_lda
+
+ 
+  ### TEST, MATRIU DE CONFUSSIÃ I ACCURACY
+  
+  predicciones_lda <- modelo_lda |> predict(test) # prediccions pel test
+  matriu_confussio <- table(test$Species, predicciones_lda$class, dnn = c("Grupo real", "Grupo pronosticado")) # matriu confussiÃ³
+  acc_lda[i] <- mean(predicciones_lda$class == test$Species) #=Accuracy
+      ### Alternativa:  sum(diag(matriu_confussio))/length(test)
+
+  # ==============================================================================
+  # ANALISIS DISCRIMINANT QUADRÀTIC
+
+    options(digits = 4)
+  modelo_qda <- qda(Species ~ ., data = train)
+  modelo_qda
+  
+  ### TEST, MATRIU DE CONFUSSIÓ I ACCURACY
+  
+    predicciones_qda <- modelo_qda |> predict(test) # Prediccions per test
+  matriz_confusion <- table(test$Species, predicciones_qda$class, dnn = c("Grupo real", "Grupo pronosticado")) #matriu de confussiÃ³
+  (acc_qda[i] <- sum(diag(matriz_confusion))/sum(matriz_confusion)) # Accuracy
+
+
+}
+acc_lda; acc_qda
+
+cat('Accuracy per la mostra (LDA) ', mean(acc_lda))
+cat('Accuracy per la mostra (QDA) ', mean(acc_qda))
+
+### CROSS-VALIDATION AMB MOSTRA I TEST:
+
+train <- iris[mostra,]
+test <- iris[-mostra,]
+
+#### LDA
+
+options(digits = 4)
+modelo_lda <- lda(Species ~ ., data = train)
+modelo_lda
+
+datos_lda <- cbind(train, predict(modelo_lda)$x)
+  ggplot(datos_lda, aes(LD1, LD2)) +
+  geom_point(aes(color = Species)) +
+  ggtitle("Gràfic LDA")
+
+### Por ÃÂºltimo, mediante la funciÃÂ³n partimat() del paquete klaR, se puede visualizar 
+## cÃÂ³mo quedan las regiones bivariantes que clasifican los individuos en cada clase 
+
+klaR::partimat(Species ~ ., data = train, method = "lda", 
+               image.colors = c("skyblue", "lightgrey", "yellow"), col.mean = "red")
+
+
+predicciones_lda <- modelo_lda |> predict(test) # prediccions pel test
+matriu_confussio <- table(test$Species, predicciones_lda$class, dnn = c("Grupo real", "Grupo pronosticado")) # matriu confussiÃ³
+(acc_lda_mt <- mean(predicciones_lda$class == test$Species)) #=Accuracy
+### Alternativa:  sum(diag(matriu_confussio))/length(test)
+
+#### QDA
+
+modelo_qda <- qda(Species ~ ., data = train)
+modelo_qda
+predicciones_qda <- modelo_qda |> predict(test) # Prediccions per test
+matriz_confusion <- table(test$Species, predicciones_qda$class, dnn = c("Grupo real", "Grupo pronosticado")) #matriu de confussiÃ³
+(acc_qda_mt <- sum(diag(matriz_confusion))/sum(matriz_confusion)) # Accuracy
+
+
+# RESUM
+
+resultats <- data.frame(rep(0,2), rep(0,2))  ## falta afegir la mitjana com a factors fora de la mostra perquÃ¨ funcioni. 
+rownames(resultats) <- c('LDA','QDA')
+colnames(resultats) <- c('Mitjana Train', 'Per test')
+
+kabble(resultats)
+
+
+# EXTRES. 
+
+## AIXÃ NO ES POT FER SERVIR
+#matriz_confusion <- reshape2::melt(matriz_confusion)
+#matriz_confusion <- caret::confusionMatrix(test$Species, predicciones_qda$class)
+#matriz_confusion
+
+## GrÃ fics: 
+
+# ==============================================================================
+# Podem visualitzar les dades per poder detectar variables classificadores que 
+# puguin contribuir a la discriminaciÃÂ³ dels grups
+"p1 <- ggplot(data = train, aes(x = Sepal.Length, fill = Species, colour = Species)) +
+    geom_density(alpha = 0.3) +
+    theme_bw()
+  p2 <- ggplot(data = train, aes(x = Sepal.Width, fill = Species, colour = Species)) +
+    geom_density(alpha = 0.3) +
+    theme_bw()
+  p3 <- ggplot(data = train, aes(x = Petal.Length, fill = Species, colour = Species)) +
+    geom_density(alpha = 0.3) +
+    theme_bw()
+  p4 <- ggplot(data = train, aes(x = Petal.Width, fill = Species, colour = Species)) +
+    geom_density(alpha = 0.3) +
+    theme_bw()"
+#ggarrange(p1, p2, p3, p4, ncol = 2, nrow = 2, common.legend = TRUE, legend = "bottom")
+
+#requiere que todas las variables sean numericas. Si tenemos alguna categÃ³rica, tenemos que generar dummy para aÃ±adirlas a los grÃ¡ficos
+#dummy es parecido a la taula lÃ³gica i al one-hot-encoding
+
+
+# ------------------------------------------------------------------------------
+# TambÃÂ© ho podem veure visualitzant les grÃ fiques de punts per veure distÃ ncies als
+# centroides
+#pairs(x = train[, -5], col = c("firebrick", "green3", "darkblue")[train[, 'Species']], pch = 20)
+
+## Como se observa en dichos grÃÂ¡ficos, las variables clasificadoras pueden contribuir 
+## a la discriminaciÃÂ³n entre las tres especies de flores iris.
+## Para aplicar la funciÃÂ³n lda() se debe especificar la variable de clasificaciÃÂ³n 
+## (Species) y el conjunto de datos (entrenamiento_t); de forma opcional, se 
+## pueden especificar las probabilidades a priori (prior, por defecto se usa 
+## proportions), el mÃÂ©todo de estimaciÃÂ³n de las medias y varianzas (method, 
+## por defecto moment) o el argumento CV para obtener los grupos pronosticados 
+## y las probabilidades a posteriori (por defecto, CV=FALSE).
+
+
+### MODELO LDA
+
+## La salida mostra las probabilidades previas (Prior probabilities of groups) 
+## y los centroides de cada grupo (Group means). A continuaciÃÂ³n mostra las 
+## funciones discriminantes de Fisher mediante los respectivos coeficientes w_jt
+## En este caso, las dos funciones discriminantes son:
+## D_1 = 0.6497ÃÂ·SL + 0.7416ÃÂ·SW - 3.9531ÃÂ·PL - 2.0670ÃÂ·PW
+## D_2 = -0.1239ÃÂ·SL - 0.8131ÃÂ·SW + 2.0349ÃÂ·PL - 2.4184ÃÂ·PW
+## con una proporciÃÂ³n de discriminaciÃÂ³n de 0,9927 y 0,0073, respectivamente.
