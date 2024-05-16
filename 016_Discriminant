@@ -95,8 +95,10 @@ ggplot(datos_lda, aes(LD1, LD2)) +
 ### Por ÃÂºltimo, mediante la funciÃÂ³n partimat() del paquete klaR, se puede visualizar 
 ## cÃÂ³mo quedan las regiones bivariantes que clasifican los individuos en cada clase 
 
-klaR::partimat(PCA ~ birth+renda+recency+wine+fruit+meat+fish+sweet+gold+NComOf+web+store+WebVis,
-               data = train, method = "lda", col.mean = "red")
+
+# No el podem fer perquè dona error, a tothom li dona error, ha de ser culpa de la funció
+#klaR::partimat(PCA ~ birth+renda+recency+wine+fruit+meat+fish+sweet+gold+NComOf+web+store+WebVis,
+#               data = train, method = "lda", col.mean = "red")
 
 
 predicciones_lda <- modelo_lda |> predict(test) # prediccions pel test
