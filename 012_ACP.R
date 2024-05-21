@@ -120,7 +120,7 @@ for (i in 1:ncol(Psi)) {
 
 
 
-# [3¿?] Representació d'individus (detectar outliers)
+# [3] Representació d'individus (detectar outliers)
 #Projecció variables
 Phi <- cor(dcon,Psi)
 View(Phi)
@@ -165,9 +165,6 @@ for (i in 1:ncol(Psi)) {
 
 #variables categòriques
 dcat <- which(sapply(dd,is.factor))
-
-
-
 
 colors <- rainbow(length(dcat))
 
@@ -219,7 +216,7 @@ for (i in 1:ncol(Psi)) {
 
 
 
-#-------------------
+#-----------------------------------
 # veure gràfics a R (no guardar-los)
 plot.tot2 <- function(Psi, eje1, eje2) {
   #png(filename = paste0(dir,"plot_tot",eje1,"-",eje2,".png"),, 
