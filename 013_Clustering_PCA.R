@@ -15,7 +15,7 @@ df <- Psi
 
 
 ## Distància euclidiana
-distMatrix <- daisy(df, metric = "euclidean", stand=TRUE) 
+distMatrix <- daisy(df, metric = "euclidean", stand=FALSE) 
 
 h1 <- hclust(distMatrix,method="ward.D2")  # NOTICE THE COST
 class(h1)
